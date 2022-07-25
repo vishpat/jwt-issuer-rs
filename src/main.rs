@@ -31,7 +31,12 @@ async fn jwks(req: HttpRequest) -> web::Json<Jwks> {
     let local_data = req
         .app_data::<web::Data<KeyData>>()
         .expect("Key Data not found");
-    let jwks = vec![local_data.key.clone()];
+    let jwk = local_data.key.clone();
+
+    let pub_key = jwk.key.to_public().unwrap().into_owned();
+    let pub_jwk = jwk::JsonWebKey::new(pub_key);
+
+    let jwks = vec![pub_jwk];
     let keys = Jwks { keys: jwks };
     web::Json(keys)
 }
@@ -57,7 +62,7 @@ async fn token(user_info: web::Json<UserInfo>, state: web::Data<KeyData>) -> imp
     .unwrap()
 }
 
-#[actix_web::main] // or #[tokio::main]
+#[actix_web::main]
 async fn main() -> std::io::Result<()> {
     let key = jwk::Key::generate_p256();
     let mut my_jwk = jwk::JsonWebKey::new(key);
