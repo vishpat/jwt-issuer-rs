@@ -13,21 +13,24 @@ extern crate jsonwebkey as jwk;
 //
 //    Ok(())
 //}
-use serde::{Serialize, Deserialize};
-use actix_web::{post, get, web, App, HttpServer, Responder};
+use actix_web::{get, post, web, App, HttpRequest, HttpServer, Responder};
+use jwk::JsonWebKey;
+use serde::{Deserialize, Serialize};
+use std::sync::Mutex;
 
 #[derive(Serialize, Deserialize, Debug)]
 struct UserInfo {
     name: String,
 }
 
-static KEY: Option<jwk::Key> = None;
-
 #[get("/jwks")]
-async fn jwks() -> impl Responder {
-    let jwks = jwk::JsonWebKey::new(KEY.as_ref().unwrap().clone());
-    let keys = [jwks];
-    web::Json(keys)
+async fn jwks(req: HttpRequest) -> impl Responder {
+    let local_data = req
+        .app_data::<web::Data<JsonWebKey>>()
+        .expect("user info missing");
+    let jwks = [local_data.clone()];
+
+    web::Json(jwks)
 }
 
 #[post("/token")]
@@ -38,10 +41,17 @@ async fn token(user_info: web::Json<UserInfo>) -> impl Responder {
 
 #[actix_web::main] // or #[tokio::main]
 async fn main() -> std::io::Result<()> {
-    KEY = Some(jwk::Key::generate_p256());
+    let key = jwk::Key::generate_p256();
+    let my_jwk = jwk::JsonWebKey::new(key);
+    let data = web::Data::new(my_jwk);
 
-    HttpServer::new(|| {
-        App::new().service(web::scope("/auth").service(jwks).service(token))
+    HttpServer::new(move || {
+        App::new().service(
+            web::scope("/auth")
+                .app_data(data.clone())
+                .service(jwks)
+                .service(token),
+        )
     })
     .bind(("0.0.0.0", 8080))?
     .run()
