@@ -1,36 +1,30 @@
 extern crate jsonwebkey as jwk;
-//
-//use serde_json;
-//use jwk::{RsaPublic, ByteVec};
-//
-//
-//fn main() -> Result<(), Box<dyn std::error::Error>> {
-//    let key = jwk::Key::generate_p256();
-//    println!("{}", serde_json::to_string_pretty(&key)?);
-//    let mut my_jwk = jwk::JsonWebKey::new(key);
-//
-//    println!("{:?}", serde_json::to_string(&my_jwk)?);
-//
-//    Ok(())
-//}
 use actix_web::{get, post, web, App, HttpRequest, HttpServer, Responder};
 use jwk::JsonWebKey;
 use serde::{Deserialize, Serialize};
-use std::sync::Mutex;
 
 #[derive(Serialize, Deserialize, Debug)]
 struct UserInfo {
     name: String,
 }
 
+struct KeyData {
+    key: JsonWebKey,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+struct JWKS {
+    keys: Vec<JsonWebKey>,
+}
+
 #[get("/jwks")]
 async fn jwks(req: HttpRequest) -> impl Responder {
     let local_data = req
-        .app_data::<web::Data<JsonWebKey>>()
-        .expect("user info missing");
-    let jwks = [local_data.clone()];
-
-    web::Json(jwks)
+        .app_data::<web::Data<KeyData>>()
+        .expect("Key Data not found");
+    let jwks = vec![local_data.key.clone()];
+    let keys = JWKS { keys: jwks };
+    web::Json(keys)
 }
 
 #[post("/token")]
@@ -43,7 +37,7 @@ async fn token(user_info: web::Json<UserInfo>) -> impl Responder {
 async fn main() -> std::io::Result<()> {
     let key = jwk::Key::generate_p256();
     let my_jwk = jwk::JsonWebKey::new(key);
-    let data = web::Data::new(my_jwk);
+    let data = web::Data::new(KeyData { key: my_jwk });
 
     HttpServer::new(move || {
         App::new().service(
