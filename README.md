@@ -20,6 +20,7 @@ A JWT token for a user can be requested using the following curl command
 ```
 curl -X POST http://localhost:8080/auth/token -d '{"name": "vishpat"}' -H 'Content-Type: application/json'
 ```
+(In the real world this endpoint would have authentication and would be exposed via https. However, for simplicity, this is not the case)
 
 The issued JWT can then be verified against the jwks endpoint as follows
 
