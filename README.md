@@ -1,6 +1,6 @@
 # JWT Issuer in Rust
 
-This project implements a JWT Issuer in Rust using [actix](https://actix.rs/), [jsonwebtoken](https://crates.io/crates/jsonwebtoken) and [jsonwebkey](https://crates.io/crates/jsonwebkey).
+This project implements a JWT (JSON Web Token) Issuer in Rust using [actix](https://actix.rs/), [jsonwebtoken](https://crates.io/crates/jsonwebtoken) and [jsonwebkey](https://crates.io/crates/jsonwebkey).
 
 # Functionality
 
