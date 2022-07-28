@@ -5,11 +5,6 @@ use jwk::JsonWebKey;
 use serde::{Deserialize, Serialize};
 use std::time::{SystemTime, UNIX_EPOCH};
 
-#[derive(Serialize, Deserialize, Debug)]
-struct UserInfo {
-    name: String,
-}
-
 struct KeyData {
     key: JsonWebKey,
 }
@@ -41,6 +36,11 @@ async fn jwks(req: HttpRequest) -> web::Json<Jwks> {
     web::Json(keys)
 }
 
+#[derive(Serialize, Deserialize, Debug)]
+struct UserInfo {
+    name: String,
+}
+
 #[post("/token")]
 async fn token(user_info: web::Json<UserInfo>, state: web::Data<KeyData>) -> impl Responder {
     let jwk = state.key.clone();
@@ -64,12 +64,12 @@ async fn token(user_info: web::Json<UserInfo>, state: web::Data<KeyData>) -> imp
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
-    let key = jwk::Key::generate_p256();
-    let mut my_jwk = jwk::JsonWebKey::new(key);
-    my_jwk
-        .set_algorithm(jwk::Algorithm::ES256)
+    let contents = std::fs::read_to_string("key.json")?;
+    let mut jwk: JsonWebKey = serde_json::from_str(&contents)?;
+    jwk.set_algorithm(jwk::Algorithm::ES256)
         .expect("Failed to set algorithm");
-    let data = web::Data::new(KeyData { key: my_jwk });
+
+    let data = web::Data::new(KeyData { key: jwk });
 
     HttpServer::new(move || {
         App::new().service(
