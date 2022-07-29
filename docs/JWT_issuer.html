@@ -144,8 +144,16 @@
                     <main>
                         <h1 id="jwt-issuer"><a class="header" href="#jwt-issuer">JWT Issuer</a></h1>
 <p>The <a href="https://github.com/vishpat/jwt-issuer-rs">jwt-issuer-rs</a> project implements a JWT (JSON Web Token) Issuer in Rust using <a href="https://actix.rs/">actix</a>, <a href="https://crates.io/crates/jsonwebtoken">jsonwebtoken</a> and <a href="https://crates.io/crates/jsonwebkey">jsonwebkey</a>.</p>
-<h1 id="functionality"><a class="header" href="#functionality">Functionality</a></h1>
-<p>Store your JWK (JSON Web Key) in <strong>key.json</strong> and run the JWT Issuer service as follows</p>
+<h2 id="key-generation"><a class="header" href="#key-generation">Key generation</a></h2>
+<p>The first step in using the JWT issuer is to generate a key pair using openssl</p>
+<pre><code>openssl ecparam -name prime256v1 -genkey -noout -out key.pem
+openssl ec -in key.pem -pubout -out public.pem
+</code></pre>
+<p>The next step is to convert the private key into a <a href="https://datatracker.ietf.org/doc/html/rfc7517">JWK</a></p>
+<pre><code>cat key.pem | sudo docker run -i danedmunds/pem-to-jwk:latest &gt; key.json
+</code></pre>
+<h2 id="usage"><a class="header" href="#usage">Usage</a></h2>
+<p>Using your JWK stored in a file called <strong>key.json</strong>, run the JWT Issuer service as follows</p>
 <pre><code>cargo run
 </code></pre>
 <p>The above command starts a HTTP server which exposes two endpoints</p>
