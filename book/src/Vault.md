@@ -2,7 +2,7 @@
 
 ## Vault Overview
 
-Hashicorp [Vault](https://www.vaultproject.io/) is an enterprise grade secret management system. Vault enables storing of secrets and accessing them using various authentication and authorization mechanisms. 
+Hashicorp [Vault](https://www.vaultproject.io/) is an enterprise grade secret management system. Vault enables storing of secrets and accessing them using various authentication mechanisms. 
 
 We will be using Vault to store a username and password in it's [kv secret store](https://www.vaultproject.io/docs/secrets/kv). The JWT Issuer will be used to setup [JWT authentication](https://www.vaultproject.io/docs/auth/jwt) to access the secrets stored in the Vault.
 
