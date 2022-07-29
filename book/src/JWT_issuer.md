@@ -14,7 +14,7 @@ openssl ec -in key.pem -pubout -out public.pem
 The next step is to convert the private key into a [JWK](https://datatracker.ietf.org/doc/html/rfc7517)
 
 ```
-cat key.pem | sudo docker run -i danedmunds/pem-to-jwk:latest > key.json
+cat key.pem | docker run -i danedmunds/pem-to-jwk:latest > key.json
 ```
 
 ## Usage 
