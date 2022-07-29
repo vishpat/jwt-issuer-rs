@@ -1,7 +1,7 @@
 provider "vault" {
 }
 
-resource "vault_jwt_auth_backend" "nvauth" {
+resource "vault_jwt_auth_backend" "jwt_auth" {
     description         = "Enable JWT auth"
     path                = "jwt"
     default_role        = "jwt_vishpat"
@@ -9,7 +9,7 @@ resource "vault_jwt_auth_backend" "nvauth" {
 }
 
 resource "vault_jwt_auth_backend_role" "jwt_vishpat" {
-  backend        = vault_jwt_auth_backend.nvauth.path
+  backend        = vault_jwt_auth_backend.jwt_auth.path
   role_name      = "jwt_vishpat"
   token_policies = ["vishpat_keys_policy"]
 
