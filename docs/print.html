@@ -148,7 +148,7 @@
 <div style="break-before: page; page-break-before: always;"></div><h1 id="jwt-issuer"><a class="header" href="#jwt-issuer">JWT Issuer</a></h1>
 <p>The <a href="https://github.com/vishpat/jwt-issuer-rs">jwt-issuer-rs</a> project implements a JWT (JSON Web Token) Issuer in Rust using <a href="https://actix.rs/">actix</a>, <a href="https://crates.io/crates/jsonwebtoken">jsonwebtoken</a> and <a href="https://crates.io/crates/jsonwebkey">jsonwebkey</a>.</p>
 <h2 id="key-generation"><a class="header" href="#key-generation">Key generation</a></h2>
-<p>The first step in using the JWT issuer is to generate a key pair using openssl</p>
+<p>The first step in using the JWT issuer is to generate a key pair using openssl to sign the JWTs. </p>
 <pre><code>openssl ecparam -name prime256v1 -genkey -noout -out key.pem
 openssl ec -in key.pem -pubout -out public.pem
 </code></pre>

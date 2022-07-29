@@ -4,7 +4,7 @@ The [jwt-issuer-rs](https://github.com/vishpat/jwt-issuer-rs) project implements
 
 ## Key generation
 
-The first step in using the JWT issuer is to generate a key pair using openssl
+The first step in using the JWT issuer is to generate a key pair using openssl to sign the JWTs. 
 
 ```
 openssl ecparam -name prime256v1 -genkey -noout -out key.pem
