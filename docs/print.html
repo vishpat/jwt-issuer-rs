@@ -82,7 +82,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../index.html">Introduction</a></li><li class="chapter-item expanded "><a href="JWT_issuer.html"><strong aria-hidden="true">1.</strong> JWT Issuer</a></li><li class="chapter-item expanded "><a href="Vault.html"><strong aria-hidden="true">2.</strong> Vault Integration</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="intro.html">Introduction</a></li><li class="chapter-item expanded "><a href="JWT_issuer.html"><strong aria-hidden="true">1.</strong> JWT Issuer</a></li><li class="chapter-item expanded "><a href="Vault.html"><strong aria-hidden="true">2.</strong> Vault Integration</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -143,7 +143,9 @@
 
                 <div id="content" class="content">
                     <main>
-                        <div style="break-before: page; page-break-before: always;"></div><h1 id="jwt-issuer"><a class="header" href="#jwt-issuer">JWT Issuer</a></h1>
+                        <h1 id="jwt-issuer-in-rust"><a class="header" href="#jwt-issuer-in-rust">JWT Issuer in Rust</a></h1>
+<p>The <a href="https://github.com/vishpat/jwt-issuer-rs">jwt-issuer-rs</a> project implements a simple JWT Issuer in Rust. The project provides an example of how the  JWT Issuer can be used as a <a href="https://www.vaultproject.io/docs/auth/jwt">JWT authenticator</a> for Hashicorp <a href="https://www.vaultproject.io">Vault</a>.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="jwt-issuer"><a class="header" href="#jwt-issuer">JWT Issuer</a></h1>
 <p>The <a href="https://github.com/vishpat/jwt-issuer-rs">jwt-issuer-rs</a> project implements a JWT (JSON Web Token) Issuer in Rust using <a href="https://actix.rs/">actix</a>, <a href="https://crates.io/crates/jsonwebtoken">jsonwebtoken</a> and <a href="https://crates.io/crates/jsonwebkey">jsonwebkey</a>.</p>
 <h1 id="functionality"><a class="header" href="#functionality">Functionality</a></h1>
 <p>Store your JWK (JSON Web Key) in <strong>key.json</strong> and run the JWT Issuer service as follows</p>
